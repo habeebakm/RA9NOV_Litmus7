@@ -25,16 +25,16 @@ public class EmployeeManagerApp {
 
             switch (choice) {
                 case 1:
-                    controller.GetEmployeeDataFromTextFile(readfile);
+                    controller.getEmployeeDataFromTextFile(readfile);
                     break;
                 case 2:
-                    controller.WriteEmployeeDataToCSVFile(readfile, writefile);
+                    controller.writeEmployeeDataToCSVFile(readfile, writefile);
                     break;
                 case 3:
-                    controller.GetEmployeeDataFromClient(writefile);
+                    controller.getEmployeeDataFromClient(writefile);
                     break;
                 case 4:
-                	controller.ManageEmployeeData();
+                	controller.manageEmployeeData();
                     break;
                 case 5:
                 	return;
@@ -44,6 +44,5 @@ public class EmployeeManagerApp {
         }
     }
 }
-
 
 

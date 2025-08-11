@@ -1,71 +1,92 @@
 package com.litmus7.employeemanager.service;
 
+import com.litmus7.employeemanager.controller.EmployeeController;
 import com.litmus7.employeemanager.dao.employeeDAO;
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.response;
-import com.litmus7.employeemanager.controller.EmployeeController;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class EmployeeService {
 
-    private employeeDAO dao = new employeeDAO();
-    Scanner scanner = new Scanner(System.in);
+    private final employeeDAO dao = new employeeDAO();
+    Scanner sc = new Scanner(System.in);
+    
+
 
     public response<Boolean, String, String> addEmployeeData() {
-        EmployeeController controller = new EmployeeController();
-        Employee employee = controller.GetEmployeeData();
-        boolean result = dao.createEmployee(employee);
-        if (result) {
-            return new response<>(true, "success", "Employee added successfully.");
-        } else {
-            return new response<>(false, "error", "Failed to add employee.");
+        try {
+            Employee employee = EmployeeController.getEmployeeData();
+            if (employee == null) {
+                return new response<>(false, "Invalid employee data.", null);
+            }
+
+            boolean result = dao.saveEmployee(employee);
+            return new response<>(result,
+                    result ? "Employee added successfully." : "Failed to add employee.",
+                    null);
+        } catch (SQLException e) {
+            return new response<>(false, "Database error while adding employee.", e.getMessage());
         }
     }
+
 
     public response<List<Employee>, String, String> getAllEmployeesData() {
-        List<Employee> employees = dao.getAllEmployees();
-        if (employees != null && !employees.isEmpty()) {
-            return new response<>(employees, "success", "Employee data fetched successfully.");
-        } else {
-            return new response<>(null, "error", "No employee data found.");
+        try {
+            List<Employee> employees = dao.selectAllEmployees();
+            if (employees.isEmpty()) {
+                return new response<>(employees, "No employees found.", null);
+            }
+            return new response<>(employees, "Employees retrieved successfully.", null);
+        } catch (SQLException e) {
+            return new response<>(null, "Database error while fetching employees.", e.getMessage());
         }
     }
 
+
     public response<Employee, String, String> getEmployeeData() {
-        System.out.println("Enter the employee id:");
-        int id = scanner.nextInt();
-        Employee employee = dao.getEmployeeById(id);
-        if (employee != null) {
-            return new response<>(employee, "success", "Employee found.");
-        } else {
-            return new response<>(null, "error", "Employee not found.");
+        try {
+        	System.out.println("enter employee id");
+            int id= Integer.parseInt(sc.nextLine().trim());
+            Employee emp = dao.selectEmployeeById(id);
+            if (emp == null) {
+                return new response<>(null, "Employee not found.", null);
+            }
+            return new response<>(emp, "Employee retrieved successfully.", null);
+        } catch (SQLException e) {
+            return new response<>(null, "Database error while fetching employee.", e.getMessage());
         }
     }
 
     public response<Boolean, String, String> deleteEmployeeData() {
-    	System.out.println("Enter the employee id:");
-        int id = scanner.nextInt();
-        boolean deleted =dao.deleteEmployeeById(id);
-        if (deleted) {
-            return new response<>(true, "success", "Employee deleted successfully.");
-        } else {
-            return new response<>(false, "error", "Failed to delete employee.");
+        try {
+        	System.out.println("enter employee id");
+            int id= Integer.parseInt(sc.nextLine().trim());
+            boolean deleted = dao.deleteEmployeeById(id);
+            return new response<>(deleted,
+                    deleted ? "Employee deleted successfully." : "Employee not found.",
+                    null);
+        } catch (SQLException e) {
+            return new response<>(false, "Database error while deleting employee.", e.getMessage());
         }
     }
 
+
     public response<Boolean, String, String> updateEmployeeData() {
-        response<Employee, String, String> employeeResponse = getEmployeeData();
-        Employee employee = employeeResponse.getData();
-        if (employee == null) {
-            return new response<>(false, "error", "Cannot update. Employee not found.");
-        }
-        boolean updated = dao.updateEmployee(employee);
-        if (updated) {
-            return new response<>(true, "success", "Employee updated successfully.");
-        } else {
-            return new response<>(false, "error", "Failed to update employee.");
+        try {
+            Employee employee = EmployeeController.getEmployeeData();
+            if (employee == null) {
+                return new response<>(false, "Invalid employee data.", null);
+            }
+
+            boolean updated = dao.updateEmployee(employee);
+            return new response<>(updated,
+                    updated ? "Employee updated successfully." : "Employee not found.",
+                    null);
+        } catch (SQLException e) {
+            return new response<>(false, "Database error while updating employee.", e.getMessage());
         }
     }
 }
