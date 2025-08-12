@@ -9,7 +9,7 @@ public class SqlConstants {
     public static final String email_regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.(com|in|org|net)$";
 
     public static final String url = "jdbc:mysql://localhost:3306/empdb";
-    public static final String user = "habeeba";
+    public static final String user = "root";
     public static final String password = "abc";
 
     public static final String insert_employee =

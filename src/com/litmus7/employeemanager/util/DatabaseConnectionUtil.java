@@ -1,28 +1,24 @@
 package com.litmus7.employeemanager.util;
 
-import com.litmus7.employeemanager.constants.SqlConstants;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnectionUtil {
 
-    private static Connection connection;
+    private static final String URL = "jdbc:mysql://localhost:3306/empdb?useSSL=false&serverTimezone=UTC";
+    private static final String USER = "root"; 
+    private static final String PASSWORD = "abc"; 
 
     static {
         try {
-            connection = DriverManager.getConnection(
-                SqlConstants.url,
-                SqlConstants.user,
-                SqlConstants.password
-            );
-        } catch (SQLException e) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static Connection getConnection() {
-        return connection;
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
     }
 }
