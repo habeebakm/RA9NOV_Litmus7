@@ -15,7 +15,7 @@ import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.util.ValidationUtil;
 import com.litmus7.employeemanager.service.EmployeeService;
 import com.litmus7.employeemanager.dto.response;
-import com.litmus7.employeemanager.constants.AppException;
+import com.litmus7.employeemanager.constants.exception;
 
 
 public class EmployeeController {
@@ -159,7 +159,7 @@ public class EmployeeController {
 		if (employee == null) return new response<>(null,false,"enter employee details");
 		try {
 			employeeService.createEmployee(employee);
-		} catch (AppException e) {
+		} catch (exception e) {
 			return new response<>(null,false,e.getMessage());
 		}
 		return new response<>(null,true,"employee inserted successfully");
@@ -169,7 +169,7 @@ public class EmployeeController {
 		List<Employee> employees;
 		try {
 			employees = employeeService.getAllEmployees();
-		} catch (AppException e) {
+		} catch (exception e) {
 			return new response<>(null,false,e.getMessage());
 		}
 		return new response<>(employees,true,"employee list retrieved successfully");
@@ -180,7 +180,7 @@ public class EmployeeController {
 		Employee employee = null;
 		try {
 			employee = employeeService.getEmployeeData(employeeId);
-		} catch (AppException e) {
+		} catch (exception e) {
 			return new response<>(null,false,e.getMessage());
 		}
 		return new response<>(employee,true,"employee data retrieved successfully");
@@ -190,7 +190,7 @@ public class EmployeeController {
 		if (employeeId <= 0) return new response<>(null,false,"invalid employee id");
 		try {
 			employeeService.deleteEmployeeData(employeeId);
-		} catch (AppException e) {
+		} catch (exception e) {
 			return new response<>(null,false,e.getMessage());
 		}
 		return new response<>(null,true,"employee deleted successfully");
@@ -200,9 +200,11 @@ public class EmployeeController {
 		if (employee == null) return new response<>(null,false,"enter correct employee details");
 		try {
 			employeeService.updateEmployee(employee);
-		} catch (AppException e) {
+		} catch (exception e) {
 			return new response<>(null,false,e.getMessage());
 		}
 		return new response<>(null,true,"employee data updated successfully");
 	}
+
+
 }
