@@ -3,7 +3,7 @@ package com.litmus7.employeemanager.dao;
 import com.litmus7.employeemanager.constants.SqlConstants;
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.util.DatabaseConnectionUtil;
-import com.litmus7.employeemanager.constants.AppException;
+import com.litmus7.employeemanager.constants.exception;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 
 
 public class employeeDAO {
-        public int saveEmployee(Employee employee) throws AppException {
+        public int saveEmployee(Employee employee) throws exception {
         try (Connection connection = DatabaseConnectionUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(SqlConstants.insert_employee)) {
             statement.setInt(1, employee.getId());
@@ -30,11 +30,11 @@ public class employeeDAO {
 
         }
         catch(SQLException e) {
-        	throw new AppException("An error occurred while inserting the employee.",e);
+        	throw new exception("An error occurred while inserting the employee.",e);
         }
     }
         
-    public List<Employee> selectAllEmployees() throws AppException{
+    public List<Employee> selectAllEmployees() throws exception{
         try (Connection connection = DatabaseConnectionUtil.getConnection();
         	 PreparedStatement statement = connection.prepareStatement(SqlConstants.select_all_employees);
              ResultSet resultset = statement.executeQuery()) {
@@ -55,11 +55,11 @@ public class employeeDAO {
             return employees;
         } 
         catch(SQLException e) {
-        	throw new AppException("An error occurred while retrieving employee list", e);
+        	throw new exception("An error occurred while retrieving employee list", e);
     }
     }
 
-    public Employee selectEmployeeById(int id) throws AppException{
+    public Employee selectEmployeeById(int id) throws exception{
         try (Connection connection = DatabaseConnectionUtil.getConnection();
         	PreparedStatement statement = connection.prepareStatement(SqlConstants.select_employee)) {
             statement.setInt(1, id);
@@ -78,23 +78,23 @@ public class employeeDAO {
                 return null;
             }
             catch(SQLException e) {
-                throw new AppException("An error occurred while retrieving employee details", e);
+                throw new exception("An error occurred while retrieving employee details", e);
         } 
        
     }
 
-    public int deleteEmployeeById(int id) throws AppException {
+    public int deleteEmployeeById(int id) throws exception {
         try (Connection connection = DatabaseConnectionUtil.getConnection();
         	PreparedStatement statement = connection.prepareStatement(SqlConstants.delete_employee)) {
         	statement.setInt(1, id);
             return statement.executeUpdate();
         } 
         catch (SQLException e) {
-            throw new AppException("An error occurred while deleting employee", e);
+            throw new exception("An error occurred while deleting employee", e);
         }
     }
 
-    public int updateEmployee(Employee emp) throws AppException{
+    public int updateEmployee(Employee emp) throws exception{
         try (Connection connection = DatabaseConnectionUtil.getConnection();
         	PreparedStatement statement = connection.prepareStatement(SqlConstants.update_employee)) {
         	statement.setString(1, emp.getFirstName());
@@ -107,7 +107,7 @@ public class employeeDAO {
             return statement.executeUpdate();
         }
         catch (SQLException e) {
-            throw new AppException("An error occurred while updating employee", e);
+            throw new exception("An error occurred while updating employee", e);
         }
         
     }
