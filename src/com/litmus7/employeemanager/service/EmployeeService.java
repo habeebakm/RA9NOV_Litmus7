@@ -30,11 +30,8 @@ public class EmployeeService {
     public List<Employee> getAllEmployees() throws exception {
     	logger.debug("Fetching employee list");
 		List<Employee> employees = dao.selectAllEmployees();
-		if (employees.isEmpty()) {
-			logger.warn("No employees found in database");
+		if (employees.isEmpty())
 			throw new exception(ErrorCodes.EMPLOYEE_NOT_FOUND, "No employees found in the database.");
-			
-		}
 		logger.info("Employee list retrieved successfully");
 		return employees;
 	}
@@ -43,10 +40,10 @@ public class EmployeeService {
     	logger.debug("Fetching employee data with ID"+id);
 		Employee employee =dao.selectEmployeeById(id);
 		if (employee == null) {
-			logger.warn("Employee not found with ID: " + id);
+			logger.warn("Employee not found with ID " + id);
 			throw new exception(ErrorCodes.EMPLOYEE_NOT_FOUND, "Employee with ID " + id + " not found.");
 		}
-		 logger.info("Employee data retrieved successfully with ID: " + id);
+		 logger.info("Employee data retrieved successfully with ID " + id);
 
 		return employee;
 	}
@@ -55,21 +52,21 @@ public class EmployeeService {
 		logger.debug("deleting employee data with ID"+id);
 		int rowsDeleted = dao.deleteEmployeeById(id);
 		if (rowsDeleted==0) {
-			logger.warn("No employee found to delete with ID: " + id);
+			logger.warn("No employee found to delete with ID " + id);
 			throw new exception(ErrorCodes.NO_ROWS_DELETED,"No employee found to delete with ID " + id);
 		}
-		logger.info("Employee deleted successfully with ID: " + id);
+		logger.info("Employee deleted successfully with ID " + id);
 		return rowsDeleted;
 	}
 	
 	public int updateEmployee(Employee employee) throws exception {
-		logger.debug("updating employee data with ID"+employee.getId());
+		logger.debug("updating employee data with ID "+employee.getId());
 		int rowsUpdated = dao.updateEmployee(employee);
 		if (rowsUpdated==0) {
-			logger.warn("No employee found to delete with ID:"+employee.getId());
+			logger.warn("No employee found to update with ID "+employee.getId());
 			throw new exception(ErrorCodes.NO_ROWS_UPDATED,"No employee found to update with ID " + employee.getId());
 		}
-		logger.info("Employee deleted successfully with ID: " +employee.getId());
+		logger.info("Employee update successfully with ID " +employee.getId());
 		return rowsUpdated;
 	}
 

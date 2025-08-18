@@ -40,7 +40,7 @@ public class employeeDAO {
              throw new exception(ErrorCodes.EMPLOYEE_ALREADY_EXISTS, 
                 "Employee with the given ID or Email already exists.");
         } catch (SQLException e) {
-        	 logger.info("SQL error while creating employee with ID: " + employee.getId(), e);
+        	 logger.error("SQL error while creating employee with ID: " + employee.getId(), e);
             throw new exception(ErrorCodes.DATABASE_ERROR, 
                 "An error occurred while inserting the employee.");
         }
@@ -68,7 +68,7 @@ public class employeeDAO {
             return employees;
         } 
         catch(SQLException e) {
-        	logger.info("SQL error while retrieving employee list: "+e);
+        	logger.error("SQL error while retrieving employee list: "+e);
         	throw new exception(ErrorCodes.DATABASE_ERROR,"An error occurred while retrieving employee list");
     }
     }
@@ -90,15 +90,12 @@ public class employeeDAO {
                         resulset.getDate("joining_date").toLocalDate(),
                         resulset.getString("status")
                     );
-                }
-                return null;
+                }return null;
             }
             catch(SQLException e) {
-            	logger.info("SQL error while retrieving employee data: "+e);
+            	logger.error("SQL error while retrieving employee data: "+e);
                 throw new exception(ErrorCodes.DATABASE_ERROR,"An error occurred while retrieving employee details");
-        } 
-       
-    }
+        }}
 
     public int deleteEmployeeById(int id) throws exception {
         try (Connection connection = DatabaseConnectionUtil.getConnection();
@@ -107,10 +104,9 @@ public class employeeDAO {
             return statement.executeUpdate();
         } 
         catch (SQLException e) {
-        	logger.info("SQL error while deleting employee: "+e);
+        	logger.error("SQL error while deleting employee: "+e);
             throw new exception(ErrorCodes.DATABASE_ERROR,"An error occurred while deleting employee");
-        }
-    }
+        }}
 
     public int updateEmployee(Employee emp) throws exception{
         try (Connection connection = DatabaseConnectionUtil.getConnection();
@@ -125,11 +121,9 @@ public class employeeDAO {
             return statement.executeUpdate();
         }
         catch (SQLException e) {
-        	logger.info("SQL error while updating employee data: "+e);
+        	logger.error("SQL error while updating employee data: "+e);
             throw new exception(ErrorCodes.DATABASE_ERROR,"An error occurred while updating employee");
-        }
-        
-    }
+        }}
 
 }
 
