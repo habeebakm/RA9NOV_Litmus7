@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,18 +11,20 @@ import com.litmus7.employeemanager.controller.EmployeeController;
 import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.dto.response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class EmployeeManagerApp {
+    private static final Logger logger = LogManager.getLogger(EmployeeManagerApp.class);
+
         public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Scanner scanner = new Scanner(System.in);
         EmployeeController employeeController = new EmployeeController();
 
+
         File readfile = new File("employee.txt");
         File writefile = new File("employee.csv");
-        int id;
-        String email;
-        String date;
-        String status;
         
         while (true) {
             System.out.println("Enter the option");
@@ -33,7 +34,16 @@ public class EmployeeManagerApp {
             System.out.println("4. Manage employee data");
             System.out.println("5. Exit");
 
-            int choice = scanner.nextInt();
+            String input = scanner.nextLine(); 
+            int choice;
+            try {
+                choice = Integer.parseInt(input.trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 5.");
+                continue;  
+            }
+
+            int id;
 
             switch (choice) {
                 case 1:
@@ -43,7 +53,7 @@ public class EmployeeManagerApp {
                     employeeController.writeEmployeeDataToCSVFile(readfile, writefile);
                     break;
                 case 3:
-                    employeeController.getEmployeeDataFromClient(writefile);
+                    employeeController.getEmployeeDataFromClient(true);
                     break;
                 case 4:
                     System.out.println("Enter the option:\n"
@@ -57,98 +67,64 @@ public class EmployeeManagerApp {
                     scanner.nextLine(); 
 
                     switch (option) {
-                        case 1:
-                            System.out.print("Enter employee id: ");
-                            id = Integer.parseInt(reader.readLine());
-
-                            System.out.print("Enter first name: ");
-                            String firstName = reader.readLine();
-
-                            System.out.print("Enter last name: ");
-                            String lastName = reader.readLine();
-
-                            System.out.print("Enter mobile number: ");
-                            String mobile = reader.readLine();
-
-                            System.out.print("Enter email: ");
-                            email = reader.readLine();
-
-                            System.out.print("Enter joining date (yyyy-MM-dd): ");
-                            date = reader.readLine();
-
-                            System.out.print("Enter active status(true/false): ");
-                            status = reader.readLine();
-
-                            Employee employee = new Employee(
-                                    id, firstName, lastName, mobile, email,
-                                    LocalDate.parse(date), Boolean.parseBoolean(status)
-                            );
-
-                            response<Void, Boolean, String> response1 = employeeController.createEmployee(employee);
+                    case 1:
+                        
+                    	Employee employeeToCreate = employeeController.getEmployeeDataFromClient(false);
+                        response<Void> response1 = employeeController.createEmployee(employeeToCreate);
+                        if (response1.getErrorCode()!=null)
+                        System.out.println(response1.getErrorCode()+" :"+response1.getMessage());
+                        else
                             System.out.println(response1.getMessage());
-                            break;
 
-                        case 2:
-                            response<List<Employee>, Boolean, String> response2 = employeeController.getAllEmployees();
-                            if (response2.getApplicationStatus()) {
+                        break;
+                    case 2:
+                            response<List<Employee>> response2 = employeeController.getAllEmployees();
+                            if (response2.getData()!=null) {
                                 List<Employee> employeelist = response2.getData();
-                                for (Employee emp : employeelist) {
-                                    System.out.println(emp);
+                                for (Employee employee : employeelist) {
+                                    System.out.println(employee);
                                 }
                             }
-                            System.out.println(response2.getMessage());
+                            if (response2.getErrorCode()!=null)
+                                System.out.println(response2.getErrorCode()+" :"+response2.getMessage());
                             break;
 
-                        case 3:
+                    case 3:
                             System.out.print("Enter employee id: ");
                             id = Integer.parseInt(reader.readLine());
-                            response<Employee, Boolean, String> response3 = employeeController.getEmployeeById(id);
-                            if (response3.getApplicationStatus()) {
+                            response<Employee> response3 = employeeController.getEmployeeById(id);
+                            if (response3.getData()!=null) {
                                 System.out.println(response3.getData());
+                                break;
                             }
-                            System.out.println(response3.getMessage());
+                            if (response3.getErrorCode()!=null)
+                                System.out.println(response3.getErrorCode()+" :"+response3.getMessage());
                             break;
-
-                        case 4:
+                    
+                    case 4:
                             System.out.print("Enter employee id: ");
                             id = Integer.parseInt(reader.readLine());
-                            response<Void, Boolean, String> response4 = employeeController.deleteEmployeebyId(id);
+                            response<Void> response4 = employeeController.deleteEmployeebyId(id);
+                            if (response4.getErrorCode()!=null) {
+                                System.out.println(response4.getErrorCode()+":"+response4.getMessage());
+                                break;
+                            }
                             System.out.println(response4.getMessage());
                             break;
 
-                        case 5:
-                            System.out.print("Enter employee id: ");
-                            id = Integer.parseInt(reader.readLine());
-
-                            System.out.print("Enter first name: ");
-                            String firstname = reader.readLine();
-
-                            System.out.print("Enter last name: ");
-                            String lastname = reader.readLine();
-
-                            System.out.print("Enter mobile number: ");
-                            String mobileno = reader.readLine();
-
-                            System.out.print("Enter email: ");
-                            email = reader.readLine();
-
-                            System.out.print("Enter joining date (yyyy-MM-dd): ");
-                            date = reader.readLine();
-
-                            System.out.print("Enter active status(true/false): ");
-                            status = reader.readLine();
-
-                            Employee employeeToUpdate = new Employee(
-                            		id, firstname, lastname, mobileno, email,
-                                    LocalDate.parse(date), Boolean.parseBoolean(status)
-                            );
-
-                            response<Void, Boolean, String> response5 = employeeController.updateEmployee(employeeToUpdate);
+                    case 5:
+                            Employee employeeToUpdate = employeeController.getEmployeeDataFromClient(false);
+                            response<Void>  response5 = employeeController.updateEmployee(employeeToUpdate);
+                            if (response5.getErrorCode()!=null) {
+                                System.out.println(response5.getErrorCode()+":"+response5.getMessage());
+                                break;
+                            }
                             System.out.println(response5.getMessage());
                             break;
 
                         default:
                             System.out.println("Invalid choice\n");
+                            logger.warn("Invalid menu option selected: " + choice);
                     }
                     break;
                 case 5:
@@ -156,7 +132,6 @@ public class EmployeeManagerApp {
                     return;
                 default:
                     System.out.println("Choose correct option");
+                    logger.warn("Invalid menu option selected: " + choice);
             }
-        }
-    }
-}
+        }}}

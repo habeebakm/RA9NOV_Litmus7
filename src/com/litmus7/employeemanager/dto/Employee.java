@@ -9,9 +9,9 @@ private String lastname;
 private String mobile;
 private String email;
 private LocalDate joiningdate ;
-private boolean status;
+private String status;
 
-public Employee(int id,String firstname,String lastname,String mobile,String email,LocalDate joiningdate,boolean status){
+public Employee(int id,String firstname,String lastname,String mobile,String email,LocalDate joiningdate,String status){
 	this.id=id;
 	this.firstname=firstname;
 	this.lastname=lastname;	
@@ -45,7 +45,19 @@ public LocalDate getDateofJoin() {
     return this.joiningdate;
 }
 
-public boolean isActive() {
+public String isActive() {
     return this.status;
+}
+@Override
+public String toString() {
+    return "id=" + id +
+            ", firstname=" + firstname + 
+            ", lastname=" + lastname + 
+            ", mobile=" + mobile + 
+            ", email=" + email + 
+            ", joiningdate=" + joiningdate +
+            ", status=" + status;
+          
+
 }
 }

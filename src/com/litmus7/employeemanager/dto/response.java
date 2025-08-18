@@ -1,25 +1,27 @@
 package com.litmus7.employeemanager.dto;
 
-public class response<T, U, V> {
+public class response<T> {
+    
+    private String errorcode;
+    private String message;
     private T data;
-    private U applicationStatus;
-    private V message;
 
-    public response(T data, U applicationStatus, V message) {
-        this.data = data;
-        this.applicationStatus = applicationStatus;
+    public response(String errorcode, String message,T data) {
+        
+        this.errorcode = errorcode;
         this.message = message;
+        this.data = data;
     }
 
     public T getData() {
         return data;
     }
 
-    public U getApplicationStatus() {
-        return applicationStatus;
+    public String getErrorCode() {
+        return errorcode;
     }
 
-    public V getMessage() {
+    public String getMessage() {
         return message;
     }
 }

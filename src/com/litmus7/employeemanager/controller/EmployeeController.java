@@ -2,8 +2,8 @@ package com.litmus7.employeemanager.controller;
 
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -15,15 +15,15 @@ import com.litmus7.employeemanager.dto.Employee;
 import com.litmus7.employeemanager.util.ValidationUtil;
 import com.litmus7.employeemanager.service.EmployeeService;
 import com.litmus7.employeemanager.dto.response;
+import com.litmus7.employeemanager.constants.ErrorCodes;
 import com.litmus7.employeemanager.constants.exception;
 
 
 public class EmployeeController {
-	private static final Scanner scanner = new Scanner(System.in);
 	EmployeeService employeeService=new EmployeeService();
     private static final List<Employee> employees = new ArrayList<>();
     
-    public static void getEmployeeDataFromTextFile(File readfile) {
+    public void getEmployeeDataFromTextFile(File readfile) {
         if (readfile != null && readfile.exists()) {
             try (BufferedReader bufferedreader = new BufferedReader(new FileReader(readfile))) {
                 String line;
@@ -46,22 +46,20 @@ public class EmployeeController {
                             ValidationUtil.isValidDate(date) &&
                             ValidationUtil.isvalidstatus(status)) {
 
-                            employees.add(new Employee(id, firstname, lastname, mobile, email, 
-                                                       LocalDate.parse(date), Boolean.parseBoolean(status)));
+                            employees.add(new Employee(id, firstname, lastname, mobile, email,LocalDate.parse(date), status));
                         } else {
                             System.out.println("Invalid data");
-                        }
-                    }
-                }
+                        }}}
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
             }
         } else {
             System.out.println("File is either null or does not exist.");
-        }
-    }
+        }}
     
-    public static void writeEmployeeDataToCSVFile(File readfile, File writefile) {
+    
+    
+    public void writeEmployeeDataToCSVFile(File readfile, File writefile) {
         try (
             BufferedReader reader = new BufferedReader(new FileReader(readfile));
             PrintWriter writer = new PrintWriter(new FileWriter(writefile))
@@ -87,124 +85,143 @@ public class EmployeeController {
                         ValidationUtil.isvalidstatus(status)) {
 
                         employees.add(new Employee(id, fname, lname, mobile, email, 
-                                                   LocalDate.parse(date), Boolean.parseBoolean(status)));
+                                                   LocalDate.parse(date), status));
                         writer.println(String.join(",", data));
                     } else {
                         System.out.println("Invalid data: " + String.join(",", data));
-                    }
-                }
-            }
+                    }}}
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
-        }
-    }
+        }}
     
-    public static Employee getEmployeeData() {
-       
-        System.out.println("Enter employee details:\nID\nFirst name\nLast name\nMobile\nEmail\nJoin Date (yyyy-mm-dd)\nStatus (true/false)");
+    
+    
+	public Employee getEmployeeDataFromClient(boolean isUpdate) {
+	    Scanner scanner = new Scanner(System.in);
+	    
+	    int id;
+	    String firstName, lastName, mobile, email, date, status;
 
-        try {
-            int id = Integer.parseInt(scanner.nextLine().trim());
-            String firstname = scanner.nextLine().trim();
-            String lastname = scanner.nextLine().trim();
-            String mobile = scanner.nextLine().trim();
-            String email = scanner.nextLine().trim();
-            String date = scanner.nextLine().trim();
-            String status = scanner.nextLine().trim();
+	    while (true) {
+	        System.out.print("Enter employee id: ");
+	            id = Integer.parseInt(scanner.nextLine().trim());
+	            if (id > 0) 
+	                break;
+	        System.out.println(ErrorCodes.INVALID_ID + ": Employee ID is not valid");}
 
-            if (ValidationUtil.isunique(id, employees) &&
-                ValidationUtil.isnotnull(firstname) &&
-                ValidationUtil.isnotnull(lastname) &&
-                ValidationUtil.isvalidnumber(mobile) &&
-                ValidationUtil.isvalidemail(email) &&
-                ValidationUtil.isValidDate(date) &&
-                ValidationUtil.isvalidstatus(status)) {
+	    while (true) {
+	        System.out.print("Enter first name: ");
+	        firstName = scanner.nextLine().trim();
+	        if (ValidationUtil.isnotnull(firstName)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_NAME + ": Employee name cannot be empty");
+	    }
 
-                return new Employee(id, firstname, lastname, mobile, email, LocalDate.parse(date), Boolean.parseBoolean(status));
-            } else {
-                System.out.println("Invalid employee details");
-                return null;
-            }
-            
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-            return null;
-        }
-    }
+	    while (true) {
+	        System.out.print("Enter last name: ");
+	        lastName = scanner.nextLine().trim();
+	        if (ValidationUtil.isnotnull(lastName)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_NAME + ": Employee name cannot be empty");
+	    }
 
+	    while (true) {
+	        System.out.print("Enter mobile number: ");
+	        mobile = scanner.nextLine().trim();
+	        if (ValidationUtil.isvalidnumber(mobile)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_MOBILE + ": Invalid phone number format");
+	    }
+	    
+	    while (true) {
+	        System.out.print("Enter email: ");
+	        email = scanner.nextLine().trim();
+	        if (ValidationUtil.isvalidemail(email)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_EMAIL + ": Email format is incorrect");
+	    }
 
-    public static void getEmployeeDataFromClient(File writefile) {
-        
-        try (PrintWriter writer = new PrintWriter(new FileWriter(writefile))) {
-            System.out.print("Enter number of employees: ");
-            int n = Integer.parseInt(scanner.nextLine());
+	    while (true) {
+	        System.out.print("Enter joining date (yyyy-MM-dd): ");
+	        date = scanner.nextLine().trim();
+	        if (ValidationUtil.isValidDate(date)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_DATE + ": Invalid date format. Expected yyyy-MM-dd");
+	    }
 
-            for (int i = 0; i < n; i++) {
-                Employee emp = getEmployeeData();
-                if (emp != null) {
-                    employees.add(emp);
-                    writer.println(emp.getId() + "," + emp.getFirstName() + "," + emp.getLastName() + "," +
-                                   emp.getMobileNumber() + "," + emp.getEmail() + "," +
-                                   emp.getDateofJoin() + "," + emp.isActive());
-                    System.out.println("Employee added successfully!");
-                } else {
-                    System.out.println("Invalid employee details");
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-   }
-    public response<Void, Boolean, String> createEmployee(Employee employee) {
-		if (employee == null) return new response<>(null,false,"enter employee details");
+	    while (true) {
+	        System.out.print("Enter active status (true/false): ");
+	        status = scanner.nextLine().trim();
+	        if ("true".equalsIgnoreCase(status) || "false".equalsIgnoreCase(status)) 
+	            break;
+	        System.out.println(ErrorCodes.INVALID_STATUS + ": Status must be true or false");
+	    }
+	    
+	    Employee employee=new Employee(id, firstName, lastName, mobile, email,LocalDate.parse(date), status);
+	    scanner.close();
+	    if(isUpdate) {
+	    	try (PrintWriter writer = new PrintWriter("employees.csv")) {
+	            writer.println("id,firstName,lastName,email,mobile");
+	            employees.add(employee);
+	        } catch (FileNotFoundException e) {
+	            e.printStackTrace();    
+	        }}
+	    return employee;
+	    }
+
+	
+    public response<Void> createEmployee(Employee employee) {
+		if (employee == null) return new response<>(ErrorCodes.INVALID_INPUT,"enter employee details",null);
 		try {
 			employeeService.createEmployee(employee);
 		} catch (exception e) {
-			return new response<>(null,false,e.getMessage());
+			return new response<>(ErrorCodes.UNKNOWN_ERROR,e.getMessage(),null);
 		}
-		return new response<>(null,true,"employee inserted successfully");
+		return new response<>(null,"employee inserted successfully",null);
 	}
 	
-	public response<List<Employee>, Boolean, String>  getAllEmployees() {
+    
+	public response<List<Employee>>  getAllEmployees() {
 		List<Employee> employees;
 		try {
 			employees = employeeService.getAllEmployees();
 		} catch (exception e) {
-			return new response<>(null,false,e.getMessage());
+			return new response<>(ErrorCodes.UNKNOWN_ERROR,e.getMessage(),null);
 		}
-		return new response<>(employees,true,"employee list retrieved successfully");
+		return new response<>(null,"employee list retrieved successfully",employees);
 	}
 	
-	public response<Employee, Boolean, String> getEmployeeById(int employeeId) {
-		if (employeeId <= 0) return new response<>(null,false,"invalid employee id");
+	
+	public response<Employee> getEmployeeById(int employeeId) {
+		if (employeeId <= 0) return new response<>(ErrorCodes.INVALID_EMPLOYEE_ID,"invalid employee id",null);
 		Employee employee = null;
 		try {
 			employee = employeeService.getEmployeeData(employeeId);
 		} catch (exception e) {
-			return new response<>(null,false,e.getMessage());
+			return new response<>(ErrorCodes.UNKNOWN_ERROR,e.getMessage(),null);
 		}
-		return new response<>(employee,true,"employee data retrieved successfully");
+		return new response<>(null,"employee data retrieved successfully",employee);
 	}
 	
-	public response<Void, Boolean, String> deleteEmployeebyId(int employeeId) {
-		if (employeeId <= 0) return new response<>(null,false,"invalid employee id");
+	
+	public response<Void> deleteEmployeebyId(int employeeId) {
+		if (employeeId <= 0) return new response<>(ErrorCodes.INVALID_EMPLOYEE_ID,"invalid employee id",null);
 		try {
 			employeeService.deleteEmployeeData(employeeId);
 		} catch (exception e) {
-			return new response<>(null,false,e.getMessage());
+			return new response<>(ErrorCodes.UNKNOWN_ERROR,e.getMessage(),null);
 		}
-		return new response<>(null,true,"employee deleted successfully");
+		return new response<>(null,"employee deleted successfully",null);
 	}
 
-	public response<Void, Boolean, String> updateEmployee(Employee employee) {
-		if (employee == null) return new response<>(null,false,"enter correct employee details");
+	
+	public response<Void> updateEmployee(Employee employee) {
+		if (employee == null) return new response<>(ErrorCodes.INVALID_EMPLOYEE_ID,"enter correct employee details",null);
 		try {
 			employeeService.updateEmployee(employee);
 		} catch (exception e) {
-			return new response<>(null,false,e.getMessage());
+			return new response<>(ErrorCodes.UNKNOWN_ERROR,e.getMessage(),null);
 		}
-		return new response<>(null,true,"employee data updated successfully");
+		return new response<>(null,"employee data updated successfully",null);
 	}
-
-
 }

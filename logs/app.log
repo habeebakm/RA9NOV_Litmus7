@@ -1,0 +1,64 @@
+[2025-08-16 22:21:17] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee list retrieved
+[2025-08-16 22:26:32] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee list retrieved
+[2025-08-16 22:36:45] [main] ERROR com.litmus7.employeemanager.service.EmployeeService - Employee list retrieved
+[2025-08-17 20:53:19] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Fetching employee list
+[2025-08-17 20:53:20] [main] INFO  com.litmus7.employeemanager.dao.employeeDAO - DAO: Retrieved employee list, count=2
+[2025-08-17 20:53:20] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee list retrieved successfully
+[2025-08-17 20:54:11] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Attempting to create employee: 1
+[2025-08-17 20:54:11] [main] ERROR com.litmus7.employeemanager.dao.employeeDAO - Integrity violation while inserting employee ID: 1
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'employee.PRIMARY'
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:109)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:988)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1166)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1101)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1448)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1084)
+	at com.litmus7.employeemanager.dao.employeeDAO.saveEmployee(employeeDAO.java:35)
+	at com.litmus7.employeemanager.service.EmployeeService.createEmployee(EmployeeService.java:21)
+	at com.litmus7.employeemanager.controller.EmployeeController.createEmployee(EmployeeController.java:176)
+	at com.litmus7.employeemanager.app.EmployeeManagerApp.main(EmployeeManagerApp.java:65)
+[2025-08-17 20:59:51] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Attempting to create employee: 1
+[2025-08-17 20:59:52] [main] ERROR com.litmus7.employeemanager.dao.employeeDAO - Integrity violation while inserting employee ID: 1
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'employee.PRIMARY'
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:109)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:988)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1166)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1101)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1448)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1084)
+	at com.litmus7.employeemanager.dao.employeeDAO.saveEmployee(employeeDAO.java:35)
+	at com.litmus7.employeemanager.service.EmployeeService.createEmployee(EmployeeService.java:21)
+	at com.litmus7.employeemanager.controller.EmployeeController.createEmployee(EmployeeController.java:176)
+	at com.litmus7.employeemanager.app.EmployeeManagerApp.main(EmployeeManagerApp.java:65)
+[2025-08-17 21:03:31] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Attempting to create employee: 1
+[2025-08-17 21:03:32] [main] ERROR com.litmus7.employeemanager.dao.employeeDAO - Integrity violation while inserting employee ID: 1
+java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '1' for key 'employee.PRIMARY'
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:109)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:114)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:988)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1166)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1101)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1448)
+	at mysql.connector.j@9.4.0/com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1084)
+	at com.litmus7.employeemanager.dao.employeeDAO.saveEmployee(employeeDAO.java:35)
+	at com.litmus7.employeemanager.service.EmployeeService.createEmployee(EmployeeService.java:21)
+	at com.litmus7.employeemanager.controller.EmployeeController.createEmployee(EmployeeController.java:176)
+	at com.litmus7.employeemanager.app.EmployeeManagerApp.main(EmployeeManagerApp.java:65)
+[2025-08-17 21:04:22] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Attempting to create employee: 3
+[2025-08-17 21:04:23] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee created successfully: 3
+[2025-08-17 21:10:13] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Fetching employee list
+[2025-08-17 21:10:14] [main] INFO  com.litmus7.employeemanager.dao.employeeDAO - DAO: Retrieved employee list, count=3
+[2025-08-17 21:10:14] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee list retrieved successfully
+[2025-08-17 21:10:39] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Fetching employee data with ID1
+[2025-08-17 21:10:39] [main] INFO  com.litmus7.employeemanager.dao.employeeDAO - DAO: Employee found with ID: 1
+[2025-08-17 21:10:39] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee data retrieved successfully with ID: 1
+[2025-08-17 21:11:20] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - Fetching employee data with ID6
+[2025-08-17 21:11:20] [main] WARN  com.litmus7.employeemanager.service.EmployeeService - Employee not found with ID: 6
+[2025-08-17 21:11:43] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - deleting employee data with ID2
+[2025-08-17 21:11:43] [main] INFO  com.litmus7.employeemanager.service.EmployeeService - Employee deleted successfully with ID: 2
+[2025-08-17 21:11:54] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - deleting employee data with ID2
+[2025-08-17 21:11:54] [main] WARN  com.litmus7.employeemanager.service.EmployeeService - No employee found to delete with ID: 2
+[2025-08-17 21:12:34] [main] DEBUG com.litmus7.employeemanager.service.EmployeeService - updating employee data with ID2
+[2025-08-17 21:12:35] [main] WARN  com.litmus7.employeemanager.service.EmployeeService - No employee found to delete with ID:2
